@@ -1,5 +1,5 @@
 import React from 'react'
-import icon from '../assets/chef-claude-icon.png'
+import icon from '/src/assets/chef-claude-icon.png'
 
 export default function Header() {
     return (
