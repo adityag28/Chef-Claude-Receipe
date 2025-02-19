@@ -1,12 +1,11 @@
 import { HfInference } from "@huggingface/inference";
 
 const SYSTEM_PROMPT = `
-You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention in your recipe. The recipe can include additional ingredients they didn't mention, but try not to include too many extra ingredients. Format your response in markdown to make it easier to render to a web page.
+You are an assistant that receives a list of ingredients...
 `;
 
-const API_KEY = import.meta.env.VITE_HF_ACCESS_TOKEN;
-
-const hf = new HfInference(API_KEY);
+const API_KEY = import.meta.env.VITE_HF_ACCESS_TOKEN; // ✅ Correct way to load API key
+const hf = new HfInference(API_KEY); // ✅ Initialize Hugging Face API client
 
 export async function getRecipeFromMistral(ingredientsArr) {
   const ingredientsString = ingredientsArr.join(", ");
@@ -17,12 +16,12 @@ export async function getRecipeFromMistral(ingredientsArr) {
         { role: "system", content: SYSTEM_PROMPT },
         {
           role: "user",
-          content: `I have ${ingredientsString}. Please give me a recipe you'd recommend I make!`,
+          content: `I have ${ingredientsString}. Give me a recipe!`,
         },
       ],
       max_tokens: 1024,
     });
-    return response.choices[0].message.content; // Ensure response structure is correct
+    return response.choices[0].message.content;
   } catch (err) {
     console.error("Error fetching recipe:", err.message);
   }
